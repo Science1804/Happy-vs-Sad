@@ -3,6 +3,9 @@ import tensorflow as tf
 import numpy as np
 from tensorflow.keras.optimizers import RMSprop
 from tensorflow.keras.preprocessing.image import ImageDataGenerator as IDG
+from google.colab import files
+from keras.preprocessing import image
+
 !git clone https://github.com/Science1804/Happy-vs-Sad.git
 os.listdir('Happy-vs-Sad')
 myzip = 'Happy-vs-Sad/happy-or-sad.zip'
@@ -46,3 +49,18 @@ def plot_graphs(history,string):
 
 plot_graphs(history1,'acc')#plots accuracy
 plot_graphs(history1,'loss')#plots loss
+
+#Try uploading an emoticon yourself 
+#procedure made suitable to follow in google Colab
+uploaded = files.upload()
+for fn in uploaded.keys():
+  path = '/content/' + fn
+  img = image.load_img(path,target_size=(150,150))
+  x = image.img_to_array(img)
+  x = np.expand_dims(x,axis=0)
+  myimages = np.vstack([x])
+  classes = model.predict(myimages,batch_size=10)
+  if classes[0] > 0.7 :
+    print(fn + " is a Happy emoticon")
+  else :
+    print(fn + ' is a Sad emoticon')  
